@@ -29,7 +29,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/clients", clientRoutes);
-app.use("/api/items", itemRoutes);
+app.use("/api/service", itemRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/quotations", quotationRoutes);
 

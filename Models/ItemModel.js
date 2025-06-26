@@ -3,7 +3,11 @@ const mongoose = require("mongoose");
 
 const itemSchema = new mongoose.Schema(
   {
-    itemType: { type: String, enum: ["Product", "Service"], required: true },
+    itemType: {
+      type: String,
+      enum: ["Product", "Service"],
+      required: true,
+    },
     itemName: {
       type: String,
       required: true,

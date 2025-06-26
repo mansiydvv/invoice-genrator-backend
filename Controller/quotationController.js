@@ -1,49 +1,56 @@
-const Quotation = require("../Models/quotationModel");
+const Quotation = require("../models/quotationModel");
 const Client = require("../Models/clientModel");
 
-// ============ Create new quotation =============
 exports.createQuotation = async (req, res) => {
   try {
-    const { clientId, ...quotationData } = req.body;
+    const {
+      clientId,
+      quotationNo,
+      quotationDate,
+      from,
+      items,
+      subTotal,
+      discount,
+      taxableValue,
+      gstAmount,
+      totalAmount,
+      amountInWords,
+    } = req.body;
 
     const client = await Client.findById(clientId);
     if (!client) {
-      return res.status(404).json({ success: false, message: "Client not found" });
+      return res.status(404).json({ message: "Client not found" });
     }
 
-    const quotation = await Quotation.create({ client: clientId, ...quotationData });
+    const quotation = new Quotation({
+      client: client._id,
+      quotationNo,
+      quotationDate,
+      from,
+      items,
+      subTotal,
+      discount,
+      taxableValue,
+      gstAmount,
+      totalAmount,
+      amountInWords,
+    });
 
+    await quotation.save();
     res.status(201).json({ success: true, data: quotation });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
 };
 
-// =========== Get all quotations with populated client info ===========
-exports.getAllQuotations = async (req, res) => {
+exports.getClientDetails = async (req, res) => {
   try {
-    const quotations = await Quotation.find().populate({
-      path: "client",
-      select: "name companyName email number billingAddress city state country pincode gstin"
-    });
-
-    res.status(200).json({ success: true, data: quotations });
-  } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
-  }
-};
-
- 
-//============== Get single quotation by ID ================
-exports.getQuotationById = async (req, res) => {
-  try {
-    const quotation = await Quotation.findById(req.params.id).populate("client");
-
-    if (!quotation) {
-      return res.status(404).json({ success: false, message: "Quotation not found" });
+    const { clientId } = req.params;
+    const client = await Client.findById(clientId);
+    if (!client) {
+      return res.status(404).json({ message: "Client not found" });
     }
-
-    res.status(200).json({ success: true, data: quotation });
+    res.status(200).json({ success: true, data: client });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }

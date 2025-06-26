@@ -1,9 +1,11 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const quotationController = require("../Controller/quotationController");
+const quotationController = require("../controller/quotationController");
 
-router.post('/create', quotationController.createQuotation);
-router.get('/getAll', quotationController.getAllQuotations);
-router.get('/get/:id', quotationController.getQuotationById);
+// Create new quotation
+router.post("/create", quotationController.createQuotation);
+
+// Get client details by ID
+router.get("/client/:clientId", quotationController.getClientDetails);
 
 module.exports = router;

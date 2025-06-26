@@ -7,30 +7,28 @@ const quotationSchema = new mongoose.Schema(
       ref: "Client",
       required: true,
     },
-    quotationNumber: { type: String, required: true },
+    quotationNo: { type: String, required: true },
     quotationDate: { type: Date, required: true },
-
-    quotationFrom: {
+    from: {
       businessName: String,
+      email: String,
+      contact: String,
       address: String,
+      city: String,
       state: String,
       country: String,
-      contact: String,
-      email: String,
       gstin: String,
     },
-
-    services: [
+    items: [
       {
         description: String,
-        hsn: String,
+        hsnOrSacCode: String,
         quantity: Number,
-        units: String,
+        unit: String,
         price: Number,
         amount: Number,
       },
     ],
-
     subTotal: Number,
     discount: Number,
     taxableValue: Number,
